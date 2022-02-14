@@ -61,7 +61,7 @@ void loop()
   Serial.print("Distance (inch): ");
   Serial.println(distanceInch);
 
-  if (distanceCm < 5)
+  if (distanceCm < 10)
   { //หากน้อยกว่า 20cm แจ้งเตือนไลน์
     digitalWrite(led, HIGH);
     Serial.println("Led: ON ");
