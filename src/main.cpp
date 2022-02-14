@@ -2,7 +2,7 @@
 #include <WiFi.h>
 #include <TridentTD_LineNotify.h>
 
-#define SSID "BTC2008-B"                                         //ใส่ชื่อ Wifi
+#define SSID "BTC2020-B"                                         //ใส่ชื่อ Wifi
 #define PASSWORD "11111111"                                  //ใส่รหัส Wifi
 #define LINE_TOKEN "ue2b1LRtbrk4FPny0FJCDx8GLAJPju929F2RH9Nga2k" //ใส่ TOKEN
 
