@@ -1,4 +1,11 @@
 #include <Arduino.h>
+#include <WiFi.h>
+#include <TridentTD_LineNotify.h>
+
+#define SSID "BTC2008-B"                                         //ใส่ชื่อ Wifi
+#define PASSWORD "11111111"                                  //ใส่รหัส Wifi
+#define LINE_TOKEN "ue2b1LRtbrk4FPny0FJCDx8GLAJPju929F2RH9Nga2k" //ใส่ TOKEN
+
 const int trigPin = 19;
 const int echoPin = 18;
 const int led = 23; //D23
@@ -10,15 +17,29 @@ long duration;
 float distanceCm;
 float distanceInch;
 
-void setup(){
+void setup()
+{
   Serial.begin(115200);     // Starts the serial communication
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT);  // Sets the echoPin as an Input
   pinMode(led, OUTPUT);
   digitalWrite(led, LOW);
+
+  Serial.println(LINE.getVersion());
+  WiFi.begin(SSID, PASSWORD);
+  Serial.printf("WiFi connecting ", SSID);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print(".");
+    delay(400);
+  }
+  Serial.printf("\nWiFi connected\nIP : ");
+  Serial.println(WiFi.localIP());
+  LINE.setToken(LINE_TOKEN);
 }
 
-void loop(){
+void loop()
+{
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -39,13 +60,17 @@ void loop(){
   Serial.println(distanceCm);
   Serial.print("Distance (inch): ");
   Serial.println(distanceInch);
-  if (distanceCm < 10){
+
+  if (distanceCm < 5)
+  { //หากน้อยกว่า 20cm แจ้งเตือนไลน์
     digitalWrite(led, HIGH);
     Serial.println("Led: ON ");
-  }else{
+    LINE.notify("ระยะ = " + String(distanceCm) + " cm");
+  }
+  else
+  {
     digitalWrite(led, LOW);
     Serial.println("Led: OFF ");
   }
-
   delay(1000);
 }
